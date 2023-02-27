@@ -57,14 +57,17 @@
         </fieldset>
       </form>
       <form id="feature-search" action="javascript:void(0);">
-        <h2>Device Types</h2>
+        
         <fieldset>
+          <h2>Device Types</h2>
           <ul id="device-types" role="list"></ul>
         </fieldset>
-        <h2>Access Needs</h2>
-        <fieldset>
+        
+        <fieldset id="access-needs" hidden>
+          <h2>Access Needs</h2>
           <ul id="feature-groups" role="list"></ul>
         </fieldset>
+        
         <input type="submit" value="Search" />
       </form>
     </article>
@@ -152,7 +155,16 @@
         </li>
       </ul>
       <h1>Feature Search Results</h1>
-      <div id="search-results">
+      <div id="no-results" hidden>
+        <p>Sorry, there were no results found.</p>
+        <p>Can't find what you looking for?</p>
+        <p>You can get in touch with one of our friendly Information Officers through any of our available contact channels:</p>
+        <p>1800 442 300 – Toll Free</p>
+        <p>0438 454 413 – SMS your question</p>
+        <p>accessibletelecoms@accan.org.au</p>
+        <p>We are available between 9AM and 8PM from Monday till Friday.</p>
+      </div>
+      <div id="search-results" hidden>
         <p>There are <span class="result-count"></span> results returned</p>
         <p>Click on the picture of the device for more information</p>
         <p>For assistance, contact us on 1800 442 300 or via email on accessibletelecoms.org.au</p>

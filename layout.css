@@ -20,3 +20,39 @@ body > footer > .container {
   width: 80ch;
   margin: auto;
 }
+
+ul#device-types {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+#device-types > li {
+  width: 48%;
+  border: 1px solid var(--secondary-background-color);
+  margin: 0.1em;
+  position: relative;
+}
+
+#device-types > li input[type="radio"] {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  appearance: none;
+  outline-offset: 2px;
+}
+#device-types > li input[type="radio"] + label {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: .2em .4em;
+}
+
+#device-types > li input:checked + label {
+  color: var(--secondary-text-color);
+  background: var(--selected-background-color);
+}

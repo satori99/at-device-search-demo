@@ -85,7 +85,11 @@ export class HomeView extends View {
 
     const deviceTypeTemplate = document.querySelector( '#device-type-selection-template' )
 
+    const accessNeeds = node.querySelector( '#access-needs' )
+
     const typesFragment = document.createDocumentFragment()
+
+
 
     for ( const type of appData.metadata.type ) {
 
@@ -94,6 +98,9 @@ export class HomeView extends View {
       const input = item.querySelector( 'input' )
       input.value = type.alias
       input.id = type.alias
+      input.onclick = () => {
+        accessNeeds.hidden = false
+      }
 
       const label = item.querySelector( 'label' )
       label.textContent = type.name
@@ -104,6 +111,14 @@ export class HomeView extends View {
     }
 
     deviceTypes.replaceChildren( typesFragment )
+
+    deviceTypes.onclick = () => {
+
+      //console.log( 'click!' )
+
+      //
+
+    }
 
     ////
 
@@ -281,9 +296,11 @@ export class FeatureSearchView extends View {
 
     if ( ! hasResults ) {
 
-      console.warn( 'TODO: no matches' )
+      node.querySelector( '#no-results' ).hidden = false
 
     } else {
+
+      node.querySelector( '#search-results' ).hidden = false
 
       const resultCount = node.querySelector( '.result-count' )
 
