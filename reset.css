@@ -1,5 +1,5 @@
 /* reset display, padding and margin on almost everything */
-*:where(:not( iframe, canvas, img, svg, video, audio, form, fieldset, input, button):not(svg *, symbol *)) {
+*:where(:not( iframe, canvas, img, svg, video, audio, form, input, button):not(svg *, symbol *)) {
   display: revert;
   padding: 0;
   margin: 0;

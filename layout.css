@@ -21,8 +21,21 @@ body > footer > .container {
   margin: auto;
 }
 
+fieldset {
+    margin: 1em 0;
+}
+
 p {
   margin: 1rem 0;
+}
+
+#keyword-search input[type="submit"] {
+  width: 20%;
+}
+
+#keyword-search input[name="keywords"] {
+  width: 60%;
+  padding: 0.5rem;
 }
 
 /* display device type form options as a flex row */
@@ -65,6 +78,13 @@ p {
 #device-types > li input:checked + label {
   color: var(--secondary-text-color);
   background: var(--selected-background-color);
+}
+
+#feature-search input[type="submit"] {
+  display: block;
+  font-size: larger;
+  width: 80%;
+  margin: 0 auto;
 }
 
 .breadcrumbs {
