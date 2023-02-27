@@ -1,4 +1,9 @@
-import { HomeView, KeywordSearchView, DeviceDetailsView } from './views.js'
+import { 
+  HomeView, 
+  KeywordSearchView, 
+  FeatureSearchView, 
+  DeviceDetailsView,
+} from './views.js'
 
 const routes = [
   {
@@ -11,6 +16,12 @@ const routes = [
     id: 'keyword-search',
     path: '/keyword-search',
     view: KeywordSearchView,
+    requiresState: true,
+  },
+  {
+    id: 'feature-search',
+    path: '/feature-search',
+    view: FeatureSearchView,
     requiresState: true,
   },
   {

@@ -1,0 +1,14 @@
+html {
+  font-family: sans-serif;
+  font-size: 20px;
+  line-height: 1.7;
+}
+
+input,
+label,
+select,
+option,
+body > header,
+body > footer {
+  font-family: system-ui;
+}

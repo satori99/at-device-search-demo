@@ -50,6 +50,7 @@ export class HomeView extends View {
       console.log( 'keyword search submit' )
       const text = keywordSearchText.value.trim()
       const keywords = text.toLowerCase().split( /,| / ).filter( s => s.length )
+
       const devices = appData.devices
         .map( device => {
 
@@ -76,11 +77,125 @@ export class HomeView extends View {
 
   }
 
+  initFeatureSearch ( node ) {
+
+    const featureSearchForm = node.querySelector( '#feature-search' )
+
+    const deviceTypes = node.querySelector( '#device-types' )
+
+    const deviceTypeTemplate = document.querySelector( '#device-type-selection-template' )
+
+    const typesFragment = document.createDocumentFragment()
+
+    for ( const type of appData.metadata.type ) {
+
+      const item = deviceTypeTemplate.content.cloneNode( true )
+
+      const input = item.querySelector( 'input' )
+      input.value = type.alias
+      input.id = type.alias
+
+      const label = item.querySelector( 'label' )
+      label.textContent = type.name
+      label.htmlFor = type.alias
+
+      typesFragment.appendChild( item )
+
+    }
+
+    deviceTypes.replaceChildren( typesFragment )
+
+    ////
+
+    const featureGroups = node.querySelector( '#feature-groups' )
+
+    const featureGroupTemplate = document.querySelector( '#feature-group-template' )
+
+    const featureItemTemplate = document.querySelector( '#feature-item-template' )
+
+    const groupsFragment = document.createDocumentFragment()
+
+    for ( const group of appData.metadata.group ) {
+
+      const groupItem = featureGroupTemplate.content.cloneNode( true )
+
+      const summary = groupItem.querySelector( 'summary' )
+
+      const list = groupItem.querySelector( 'ul' )
+
+      summary.textContent = group.name
+
+      for ( const feature of appData.metadata.feature ) {
+        const featureItem = featureItemTemplate.content.cloneNode( true )
+        const input = featureItem.querySelector( 'input' )
+        const label = featureItem.querySelector( 'label' )
+        const id = `feature-${group.id}-${feature.id}`
+        input.id = id
+        label.htmlFor = id
+        input.value = feature.id
+        featureItem.querySelector( '.feature-title' ).textContent = feature.name
+        featureItem.querySelector( '.feature-text' ).textContent = feature.description
+        list.appendChild( featureItem )
+      }
+
+      groupsFragment.appendChild( groupItem )
+
+    }
+
+    featureGroups.replaceChildren( groupsFragment )
+
+    ////
+
+    featureSearchForm.onsubmit = e => {
+
+      const formData = new FormData( featureSearchForm )
+
+      const deviceType = formData.get( 'device-type' )
+
+      const deviceFeatures = formData.getAll( 'device-feature' ).map( s => parseInt( s, 10 ) )
+
+      //console.log( 'deviceType:', deviceType )
+
+      //console.log( 'deviceFeatures:', deviceFeatures )
+
+      const matchedDevices = appData.devices
+        .map( device => {
+          const typeAlias = appData.metadata.type.find( t => t.id === device.type )?.alias
+          return {
+            id: device.id,
+            name: device.name.toLowerCase(),
+            type: typeAlias,
+            alias: device.alias,
+            image: device.image,
+            feature: device.feature
+          }
+        } )
+        .filter( device => {
+          return device.type === deviceType
+              && deviceFeatures.some( id => device.feature.includes( id ) )
+        } )
+
+      console.log( 'matched devices:', matchedDevices.length )
+
+      history.pushState( {
+        type: deviceType,
+        fetures: deviceFeatures,
+        devices: matchedDevices
+      }, null, '#/feature-search' )
+
+      this.router()
+
+    }
+
+  }
+
   async getHtml () {
 
     const node = await super.getHtml()
 
     this.initKeywordSearch( node )
+
+    this.initFeatureSearch( node )
 
     return node
 
@@ -122,7 +237,7 @@ export class KeywordSearchView extends View {
 
     history.state.devices.forEach( device => {
 
-      console.log( device )
+      //console.log( device )
 
       const item = template.content.cloneNode( true )
 
@@ -141,6 +256,68 @@ export class KeywordSearchView extends View {
 
     return node
 
+
+  }
+
+}
+
+export class FeatureSearchView extends View {
+
+  constructor ( router ) {
+
+    super(
+        document.querySelector( '#feature-search-result-template' ),
+        'Accessible Telecoms Device Feature Search',
+        router
+        )
+
+  }
+
+  async getHtml () {
+
+    const node = await super.getHtml()
+
+    const hasResults = history.state.devices.length > 0
+
+    if ( ! hasResults ) {
+
+      console.warn( 'TODO: no matches' )
+
+    } else {
+
+      const resultCount = node.querySelector( '.result-count' )
+
+      resultCount.textContent = history.state.devices.length
+
+      const resultList = node.querySelector( '#search-results ul' )
+
+      const fragment = document.createDocumentFragment()
+
+      const template = document.querySelector( '#feature-search-item-template' )
+
+      history.state.devices.forEach( device => {
+
+        console.debug( device.name )
+
+        const item = template.content.cloneNode( true )
+
+
+        item.querySelector( 'a' ).href = `#/device/${device.type}/${device.alias}`
+        item.querySelector( 'img' ).src = `https://accessibletelecoms.org.au${device.image}`
+        item.querySelector( 'img' ).alt = `${device.name} image`
+        item.querySelector( '.device-name' ).textContent = device.name
+
+
+        fragment.appendChild( item )
+
+      } )
+
+      resultList.replaceChildren( fragment )
+
+    }
+
+
+    return node
 
   }
 
@@ -187,10 +364,10 @@ export class DeviceDetailsView extends View {
 
     node.querySelector( 'h1' ).textContent = device.name
     node.querySelector( '[class="device-type-name"]' ).textContent = type.name
-    
-    
+
+
     console.debug( device.image )
-    
+
     node.querySelector( 'img' ).src = `https://accessibletelecoms.org.au${device.image}`
 
     // add details
@@ -256,7 +433,7 @@ export class DeviceDetailsView extends View {
       link.textContent = name
       retailFrag.appendChild( link )
     } )
-        
+
     retailFrag.appendChild( new Text( 'and other retailers' ) )
 
     node.querySelector( '[class="retail"]' ).appendChild( retailFrag )
@@ -264,7 +441,7 @@ export class DeviceDetailsView extends View {
     // add info links
 
     const linkFrag = document.createDocumentFragment()
-    
+
     Object.entries( device.link ).forEach( ( [ name, value ] ) => {
       const item = document.createElement( 'p' )
       const link = document.createElement( 'a' )
@@ -273,9 +450,9 @@ export class DeviceDetailsView extends View {
       link.textContent = name
       item.appendChild( link )
       linkFrag.appendChild( item )
-      
+
     } )
-    
+
     node.querySelector( '[class="links"]' ).appendChild( linkFrag )
 
     return node

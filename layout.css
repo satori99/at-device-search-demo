@@ -1,0 +1,22 @@
+/* document body fills the entire viewport */
+html, body { height: 100%; }
+
+/* document body is a single flex column */
+body {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+/* main element grows to fill vertical space*/
+body > main {
+  flex-grow: 1;
+}
+
+/* page item container width and alignment */
+body > header > .container,
+body > main   > .container,
+body > footer > .container {
+  padding: 1em;
+  width: 80ch;
+  margin: auto;
+}

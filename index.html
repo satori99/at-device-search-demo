@@ -6,6 +6,8 @@
     <title>Accessible Telecoms Device Search Demo</title>
     <link rel="stylesheet" href="reset.css" />
     <link rel="stylesheet" href="layout.css" />
+    <link rel="stylesheet" href="typography.css" />
+    <link rel="stylesheet" href="theme.css" />
     <script type="module" src="index.js"></script>
   </head>
   <body>
@@ -14,7 +16,7 @@
         <h1>Accessible Telecoms</h1>
       </div>
     </header>
-    <main>
+    <main aria-live="assertive">
       <div class="container">
         <noscript class="warning">
           <h1>Javascript is disabled</h1>
@@ -55,9 +57,45 @@
         </fieldset>
       </form>
       <form id="feature-search" action="javascript:void(0);">
-        <!-- -->
+        <h2>Device Types</h2>
+        <fieldset>
+          <ul id="device-types" role="list"></ul>
+        </fieldset>
+        <h2>Access Needs</h2>
+        <fieldset>
+          <ul id="feature-groups" role="list"></ul>
+        </fieldset>
+        <input type="submit" value="Search" />
       </form>
     </article>
+  </template>
+
+  <template id="device-type-selection-template">
+    <li>
+      <input id="" type="radio" name="device-type" />
+      <label for=""></label>
+    </li>
+  </template>
+
+  <template id="feature-group-template">
+    <li>
+      <details>
+        <summary></summary>
+        <ul role="list">
+
+        </ul>
+      </details>
+    </li>
+  </template>
+
+  <template id="feature-item-template">
+    <li>
+      <input type="checkbox" name="device-feature" />
+      <label>
+        <h3 class="feature-title"></h3>
+        <p class="feature-text"></p>
+      </label>
+    </li>
   </template>
 
   <template id="keyword-search-result-template">
@@ -103,7 +141,7 @@
     </li>
   </template>
 
-  <template id="keyword-search-result-template">
+  <template id="feature-search-result-template">
     <article>
       <ul class="breadcrumbs" role="list">
         <li>
@@ -114,9 +152,25 @@
         </li>
       </ul>
       <h1>Feature Search Results</h1>
+      <div id="search-results">
+        <p>There are <span class="result-count"></span> results returned</p>
+        <p>Click on the picture of the device for more information</p>
+        <p>For assistance, contact us on 1800 442 300 or via email on accessibletelecoms.org.au</p>
+        <p>Close matches to your search</p>
+        <ul role="list"/>
+      </div>
     </article>
   </template>
-
+  
+  <template id="feature-search-item-template">
+    <li>
+      <a href="#/device/type/alias">
+        <img alt="device image" width="100" height="100"/>
+        <h3 class="device-name"></h3>
+      </a>
+    </li>
+  </template>
+  
   <template id="device-details-template">
     <article>
       <ul class="breadcrumbs" role="list">
@@ -136,7 +190,7 @@
       </ul>
       <h2>Accessibility Features:</h2>
       <ul class="device-features" role="list">
-      
+
       </ul>
       <div class="retail">
         <h2>How and where to get it from?</h2>

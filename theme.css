@@ -1,0 +1,22 @@
+:root {
+
+  --primary-text-color: #272560;
+  --secondary-text-color: #eee;
+
+  --primary-background-color: #eee;
+  --secondary-background-color: #1d3a68;
+
+  --selected-background-color: #6d6d6d;
+
+}
+
+body {
+  background-color: var(--primary-background-color);
+  color: var(--primary-text-color);
+}
+
+body > header,
+body > footer {
+  background-color: var(--secondary-background-color);
+  color: var(--secondary-text-color);
+}

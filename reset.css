@@ -1,0 +1,19 @@
+/* reset display, padding and margin on almost everything */
+*:where(:not( iframe, canvas, img, svg, video, audio, form, fieldset, input, button):not(svg *, symbol *)) {
+  display: revert;
+  padding: 0;
+  margin: 0;
+}
+
+/* set preferred box-sizing for all elements */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Remove list styles (bullets/numbers) */
+ol[role="list"], ul[role="list"], menu { list-style: none; }
+
+/* make hidden attribute work with any element */
+*[hidden] {
+  display: none !important;
+}
