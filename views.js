@@ -1,4 +1,6 @@
 
+
+
 export class View {
 
   constructor ( template, title, router ) {
@@ -64,8 +66,6 @@ export class HomeView extends View {
             image: device.image
           }
         } )
-        //.map( device => device.name.toLowerCase() )
-
         .filter( device => keywords.some( kw => device.name.includes( kw ) ) )
 
       console.log( 'matched devices:', devices.length )
@@ -89,8 +89,6 @@ export class HomeView extends View {
 
     const typesFragment = document.createDocumentFragment()
 
-
-
     for ( const type of appData.metadata.type ) {
 
       const item = deviceTypeTemplate.content.cloneNode( true )
@@ -111,14 +109,6 @@ export class HomeView extends View {
     }
 
     deviceTypes.replaceChildren( typesFragment )
-
-    deviceTypes.onclick = () => {
-
-      //console.log( 'click!' )
-
-      //
-
-    }
 
     ////
 
@@ -169,9 +159,9 @@ export class HomeView extends View {
 
       const deviceFeatures = formData.getAll( 'device-feature' ).map( s => parseInt( s, 10 ) )
 
-      //console.log( 'deviceType:', deviceType )
+      // console.log( 'deviceType:', deviceType )
 
-      //console.log( 'deviceFeatures:', deviceFeatures )
+      // console.log( 'deviceFeatures:', deviceFeatures )
 
       const matchedDevices = appData.devices
         .map( device => {
@@ -187,7 +177,10 @@ export class HomeView extends View {
         } )
         .filter( device => {
           return device.type === deviceType
-              && deviceFeatures.some( id => device.feature.includes( id ) )
+              && (
+                deviceFeatures.length === 0 ||
+                deviceFeatures.some( id => device.feature.includes( id ) )
+              )
         } )
 
       console.log( 'matched devices:', matchedDevices.length )
@@ -268,6 +261,38 @@ export class KeywordSearchView extends View {
     } )
 
     resultList.replaceChildren( fragment )
+
+    //
+
+    const keywordSearchForm = node.querySelector( '#keyword-search' )
+    const keywordSearchText = node.querySelector( 'input[type="search"]' )
+
+    keywordSearchForm.onsubmit = e => {
+
+      console.log( 'keyword search submit' )
+      const text = keywordSearchText.value.trim()
+      const keywords = text.toLowerCase().split( /,| / ).filter( s => s.length )
+
+      const devices = appData.devices
+        .map( device => {
+          const typeAlias = appData.metadata.type.find( t => t.id === device.type )?.alias
+          return {
+            id: device.id,
+            name: device.name.toLowerCase(),
+            type: typeAlias,
+            alias: device.alias,
+            image: device.image
+          }
+        } )
+        .filter( device => keywords.some( kw => device.name.includes( kw ) ) )
+
+      console.log( 'matched devices:', devices.length )
+      history.pushState( { keywords, devices }, null, '#/keyword-search' )
+      this.router()
+    }
+
+
+    //
 
     return node
 

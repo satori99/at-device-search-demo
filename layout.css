@@ -17,17 +17,23 @@ body > header > .container,
 body > main   > .container,
 body > footer > .container {
   padding: 1em;
-  width: 80ch;
+  width: 100ch;
   margin: auto;
 }
 
-ul#device-types {
+p {
+  margin: 1rem 0;
+}
+
+/* display device type form options as a flex row */
+#device-types {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
   width: 100%;
 }
 
+/* */
 #device-types > li {
   width: 48%;
   border: 1px solid var(--secondary-background-color);
@@ -35,6 +41,7 @@ ul#device-types {
   position: relative;
 }
 
+/* hide default radio button */
 #device-types > li input[type="radio"] {
   display: block;
   position: absolute;
@@ -45,6 +52,8 @@ ul#device-types {
   appearance: none;
   outline-offset: 2px;
 }
+
+/* make the label a block element */
 #device-types > li input[type="radio"] + label {
   display: block;
   width: 100%;
@@ -52,7 +61,50 @@ ul#device-types {
   padding: .2em .4em;
 }
 
+/* change color when checked */
 #device-types > li input:checked + label {
   color: var(--secondary-text-color);
   background: var(--selected-background-color);
 }
+
+.breadcrumbs {
+  display: flex;
+  flex-flow: row nowrap;
+  margin: 1em 0;
+}
+.breadcrumbs li:not(:last-child):after {
+  content: "\00BB";
+}
+
+.breadcrumbs li:after {
+  padding: 0.3em;
+}
+
+
+#search-results > ul {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+#search-results > ul > li {
+  display: flex;
+  flex-flow: row wrap;
+  width: 200px;
+  text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
